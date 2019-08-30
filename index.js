@@ -1,3 +1,5 @@
+require('dotenv').config({ debug: process.env.NODE_ENV === 'development' });
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -15,6 +17,6 @@ app.use('/api', apiRoutes);
 
 app.listen(port, () => console.log(`Running SMW on port ${port}`));
 
-mongoose.connect('mongodb://localhost/smw', { useNewUrlParser: true }, () =>
+mongoose.connect(`mongodb://${process.env.DB_HOST}`, { useNewUrlParser: true }, () =>
   console.log('db connected sucessfully')
 );
