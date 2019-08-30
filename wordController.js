@@ -3,7 +3,8 @@
 const Word = require('./wordModel');
 
 exports.index = (req, res) => {
-  Word.get((err, contacts) => {
+    
+  Word.get((err, words) => {
     if (err) {
       res.json({
         status: 'error',
@@ -12,26 +13,36 @@ exports.index = (req, res) => {
     }
     res.json({
       status: 'success',
-      data: contacts
+      data: words
     });
   });
 };
 
 exports.new = (req, res) => {
-  let word = new Word();
-  word.desc = req.body.desc ? req.body.desc : word.desc;
 
-  word.save(err => {
-    // if (err)
-    //     res.json(err);
-    res.json({
-      message: 'New word created!',
-      data: word
-    });
-  });
+    Word.findOne({"desc": req.body.desc} , (err, word) => {
+        if (word != null) {
+            res.json({
+                status: 'error',
+                message: 'word already registered.'
+            });
+        } else {
+            let word = new Word();
+            word.desc = req.body.desc ? req.body.desc : word.desc;
+        
+          word.save(err => {
+            if (err)
+                res.json(err);
+            res.json({
+              data: word
+            });
+          });
+        }
+      });
 };
 
 exports.view = (req, res) => {
+
   Word.findById(req.params.contact_id, (err, word) => {
     if (err) res.send(err);
     res.json({
@@ -42,6 +53,7 @@ exports.view = (req, res) => {
 };
 
 exports.update = (req, res) => {
+
   Word.findById(req.params.contact_id, (err, word) => {
     if (err) res.send(err);
     word.description = req.body.description
@@ -59,6 +71,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+
   Word.remove({ _id: req.params.word_id }, (err, word) => {
     if (err) res.send(err);
     res.json({

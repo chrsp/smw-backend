@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const wordSchema = mongoose.Schema({
   desc: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    index: true
   }
 });
 
