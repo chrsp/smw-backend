@@ -25,7 +25,7 @@ exports.new = (req, res) => {
     word.save(err => {
       if (err) return res.json({
         status: 'error',
-        message: 'Word alread exists',
+        message: 'Word already exists',
       });
 
       res.json({
