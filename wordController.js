@@ -19,26 +19,20 @@ exports.index = (req, res) => {
 };
 
 exports.new = (req, res) => {
-
-    Word.findOne({"desc": req.body.desc} , (err, word) => {
-        if (word != null) {
-            res.json({
-                status: 'error',
-                message: 'word already registered.'
-            });
-        } else {
-            let word = new Word();
-            word.desc = req.body.desc ? req.body.desc : word.desc;
-        
-          word.save(err => {
-            if (err)
-                res.json(err);
-            res.json({
-              data: word
-            });
-          });
-        }
+    const word = new Word();
+    word.desc = req.body.desc;
+    
+    word.save(err => {
+      if (err) return res.json({
+        status: 'error',
+        message: 'Word alread exists',
       });
+
+      res.json({
+        data: word,
+        message: `Word ${word} saved.`,
+      });
+    });
 };
 
 exports.view = (req, res) => {
