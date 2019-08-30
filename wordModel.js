@@ -1,14 +1,14 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var wordSchema = mongoose.Schema({
-    desc: {
-        type: String,
-        required: true
-    },
+const wordSchema = mongoose.Schema({
+  desc: {
+    type: String,
+    required: true
+  }
 });
 
-var Word = module.exports = mongoose.model('word', wordSchema);
+const Word = (module.exports = mongoose.model('word', wordSchema));
 
-module.exports.get = function (callback, limit) {
-    Word.find(callback).limit(limit);
-}
+module.exports.get = (callback, limit) => {
+  Word.find(callback).limit(limit);
+};
