@@ -5,9 +5,10 @@ const wordSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    index: true
   }
 });
+
+wordSchema.path('desc').index({ unique: true });
 
 const Word = (module.exports = mongoose.model('word', wordSchema));
 

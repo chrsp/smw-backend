@@ -1,22 +1,33 @@
 require('dotenv').config({ debug: process.env.NODE_ENV === 'development' });
 
-const express = require('express');
-const bodyParser = require('body-parser');
+const https = require('https');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const apiRoutes = require('./api-routes');
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const port = process.env.PORT || 8443;
 
-const app = express();
-const port = process.env.PORT || 8080;
+var app = express();
 
-//app.get("/", (request, response) => response.send("hello motherfucka"));
+var privateKey  = fs.readFileSync(path.join(__dirname, 'security', 'key.pem'));
+var certificate  = fs.readFileSync(path.join(__dirname, 'security', 'certificate.pem'));
+
+const httpsOptions = {
+  cert: certificate,
+   key: privateKey
+  };
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use('/api', apiRoutes);
 
-app.listen(port, () => console.log(`Running SMW on port ${port}`));
+https.createServer(httpsOptions, app)
+.listen(port, () => {
+  console.log(`Listening port: ${port}`);
+})
 
 mongoose.connect(`mongodb://${process.env.DB_HOST}`, { useNewUrlParser: true }, () =>
-  console.log('db connected sucessfully')
-);
+   console.log(`db connected sucessfully`)
+   );

@@ -5,7 +5,7 @@ const wordController = require('./wordController');
 
 router.get('/', (req, res) => {
   res.json({
-    status: 'API Its Working',
+    status: 'success',
     message: 'Welcome to SMW!'
   });
 });

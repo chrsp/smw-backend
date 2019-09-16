@@ -3,7 +3,6 @@
 const Word = require('./wordModel');
 
 exports.index = (req, res) => {
-    
   Word.get((err, words) => {
     if (err) {
       res.json({
@@ -36,7 +35,6 @@ exports.new = (req, res) => {
 };
 
 exports.view = (req, res) => {
-
   Word.findById(req.params.contact_id, (err, word) => {
     if (err) res.send(err);
     res.json({
@@ -47,7 +45,6 @@ exports.view = (req, res) => {
 };
 
 exports.update = (req, res) => {
-
   Word.findById(req.params.contact_id, (err, word) => {
     if (err) res.send(err);
     word.description = req.body.description
@@ -65,7 +62,6 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-
   Word.remove({ _id: req.params.word_id }, (err, word) => {
     if (err) res.send(err);
     res.json({
